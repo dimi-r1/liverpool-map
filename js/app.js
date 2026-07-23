@@ -25,9 +25,28 @@ const LAYERS = {
 
 const TYPE_ICONS = { restaurant: "🍖", shop: "🛒", church: "⛪", group: "🤸", barber: "💈", other: "📍" };
 
+const CRIME_LABELS = {
+  "anti-social-behaviour": "Anti-social behaviour",
+  "bicycle-theft": "Bicycle theft",
+  "burglary": "Burglary",
+  "criminal-damage-arson": "Criminal damage & arson",
+  "drugs": "Drugs",
+  "other-theft": "Other theft",
+  "possession-of-weapons": "Weapons possession",
+  "public-order": "Public order",
+  "robbery": "Robbery",
+  "shoplifting": "Shoplifting",
+  "theft-from-the-person": "Theft from the person",
+  "vehicle-crime": "Vehicle crime",
+  "violent-crime": "Violence & sexual offences",
+  "other-crime": "Other crime"
+};
+
 let currentLayer = "overall";
 let areasFC = null;
 let spotMarkers = [];
+let hoveredPostcode = null;
+let panelFetchId = 0;
 
 const map = new maplibregl.Map({
   container: "map",
@@ -51,7 +70,9 @@ const map = new maplibregl.Map({
   maxBounds: [[-3.6, 53.10], [-2.40, 53.70]]
 });
 
-function scoreExpr(layer) {
+const hoverTip = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 12, className: "hover-tip" });
+
+function scoreExpr() {
   const stops = [[5, SCORE_COLORS[5]], [4, SCORE_COLORS[4]], [3, SCORE_COLORS[3]], [2, SCORE_COLORS[2]], [1, SCORE_COLORS[1]]];
   return ["match", ["get", "_score"], ...stops.flat(), "#999999"];
 }
@@ -73,35 +94,107 @@ function renderLegend() {
     ).join("");
 }
 
-function pill(text, score) {
-  return `<span class="pill" style="background:${SCORE_COLORS[score] || "#999"}">${text}</span>`;
+function setHover(postcode, state) {
+  if (hoveredPostcode !== null) map.setFeatureState({ source: "areas", id: hoveredPostcode }, { hover: false });
+  hoveredPostcode = state ? postcode : null;
+  if (state) map.setFeatureState({ source: "areas", id: postcode }, { hover: true });
 }
 
-function showPanel(p) {
-  const panel = document.getElementById("panel");
+function featureBounds(feature) {
+  const b = [Infinity, Infinity, -Infinity, -Infinity];
+  const walk = coords => coords.forEach(c => {
+    if (typeof c[0] === "number") {
+      b[0] = Math.min(b[0], c[0]); b[1] = Math.min(b[1], c[1]);
+      b[2] = Math.max(b[2], c[0]); b[3] = Math.max(b[3], c[1]);
+    } else walk(c);
+  });
+  walk(feature.geometry.coordinates);
+  return [[b[0], b[1]], [b[2], b[3]]];
+}
+
+function bar(label, score, text) {
+  return `<div class="bar-row">
+    <span class="bar-label">${label}</span>
+    <div class="bar-track"><div class="bar-fill" data-width="${score * 20}" style="background:${SCORE_COLORS[score]}"></div></div>
+    <span class="bar-text">${text}</span>
+  </div>`;
+}
+
+function showPanel(p, feature) {
+  const fetchId = ++panelFetchId;
   const rentScore = LAYERS.rent.score(p);
   const commuteScore = LAYERS.commute.score(p);
+  const areaQuery = encodeURIComponent(`${p.postcode} ${p.side === "wirral" ? "Wirral" : "Liverpool"}`);
+
   document.getElementById("panel-content").innerHTML = `
     <h2>${p.postcode}</h2>
     <div class="area-name">${p.name} · ${p.side === "wirral" ? "Wirral side 🌊" : "Liverpool side 🔴"}</div>
-    <div class="score-row"><span>Overall vibe</span>${pill(["", "Avoid-ish", "Caution", "Mixed", "Good", "Great"][p.overall], p.overall)}</div>
-    <div class="score-row"><span>Safety</span>${pill(p.safety + "/5", p.safety)}</div>
-    ${p.crimeTotal != null ? `<div class="score-row"><span>Reported crimes (${p.crimeDate}, ~1mi radius)</span><span>${p.crimeTotal}</span></div>` : ""}
-    <div class="score-row"><span>Rent (1-bed, indicative)</span>${pill("~£" + p.rentAvg + "/mo " + p.rentBand, rentScore)}</div>
-    <div class="score-row"><span>Commute to centre</span>${pill("~" + p.commuteMins + " mins", commuteScore)}</div>
+    <div class="bars">
+      ${bar("Overall", p.overall, ["", "Avoid-ish", "Caution", "Mixed", "Good", "Great"][p.overall])}
+      ${bar("Safety", p.safety, p.safety + "/5")}
+      ${bar("Rent value", rentScore, "~£" + p.rentAvg + "/mo")}
+      ${bar("Commute", commuteScore, "~" + p.commuteMins + " mins")}
+    </div>
     <div class="verdict">💬 ${p.verdict}</div>
     <ul class="notes">${p.notes.map(n => `<li>${n}</li>`).join("")}</ul>
+    <div class="crime-box">
+      <h3>🚔 Crime breakdown <small>(${p.crimeDate || "latest"}, ~1mi radius)</small></h3>
+      <div class="crime-loading">Loading live police.uk data…</div>
+    </div>
+    <div class="panel-links">
+      <a href="https://www.google.com/maps/search/?api=1&query=${areaQuery}" target="_blank" rel="noopener">📍 Google Maps</a>
+      <a href="https://www.rightmove.co.uk/property-to-rent/find.html?searchLocation=${encodeURIComponent(p.postcode)}" target="_blank" rel="noopener">🏠 Rentals on Rightmove</a>
+    </div>
   `;
-  panel.classList.remove("hidden");
+  document.getElementById("panel").classList.remove("hidden");
+
+  requestAnimationFrame(() =>
+    document.querySelectorAll(".bar-fill").forEach(el => el.style.width = el.dataset.width + "%"));
+
+  if (feature) map.fitBounds(featureBounds(feature), { padding: { top: 60, bottom: 60, left: 60, right: 400 }, duration: 900, maxZoom: 13.5 });
+
+  loadCrimeBreakdown(p, fetchId);
 }
 
-async function clearSpots() {
+async function loadCrimeBreakdown(p, fetchId) {
+  try {
+    const res = await fetch(`https://data.police.uk/api/crimes-street/all-crime?lat=${p.center[1]}&lng=${p.center[0]}&date=${p.crimeDate}`);
+    if (!res.ok) throw new Error(res.status);
+    const crimes = await res.json();
+    if (fetchId !== panelFetchId) return;
+
+    const counts = {};
+    crimes.forEach(c => counts[c.category] = (counts[c.category] || 0) + 1);
+    const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+    const max = top[0] ? top[0][1] : 1;
+
+    const box = document.querySelector(".crime-box");
+    if (!box) return;
+    box.innerHTML = `
+      <h3>🚔 Crime breakdown <small>(${p.crimeDate}, ${crimes.length} reported)</small></h3>
+      ${top.map(([cat, n]) => `
+        <div class="crime-row">
+          <span class="crime-name">${CRIME_LABELS[cat] || cat}</span>
+          <div class="bar-track"><div class="bar-fill crime" data-width="${Math.round(n / max * 100)}"></div></div>
+          <span class="bar-text">${n}</span>
+        </div>`).join("")}
+      <small class="src">Source: police.uk open data</small>
+    `;
+    requestAnimationFrame(() =>
+      box.querySelectorAll(".bar-fill").forEach(el => el.style.width = el.dataset.width + "%"));
+  } catch {
+    const box = document.querySelector(".crime-loading");
+    if (box && fetchId === panelFetchId) box.textContent = "Couldn't load live crime data right now.";
+  }
+}
+
+function clearSpots() {
   spotMarkers.forEach(m => m.remove());
   spotMarkers = [];
 }
 
 async function showCommunity(id) {
-  await clearSpots();
+  clearSpots();
   if (!id) return;
   const res = await fetch(`data/communities/${id}.json`);
   const data = await res.json();
@@ -109,14 +202,26 @@ async function showCommunity(id) {
     const el = document.createElement("div");
     el.className = "spot-marker";
     el.textContent = TYPE_ICONS[spot.type] || TYPE_ICONS.other;
+    el.addEventListener("mouseenter", () => el.classList.add("grown"));
+    el.addEventListener("mouseleave", () => el.classList.remove("grown"));
+    const popup = new maplibregl.Popup({ offset: 24, className: "spot-popup" }).setHTML(`
+      <div class="spot-card">
+        <div class="spot-icon">${TYPE_ICONS[spot.type] || TYPE_ICONS.other}</div>
+        <div>
+          <strong>${spot.name}</strong>
+          <div class="spot-type">${spot.type}</div>
+          <p>${spot.notes}</p>
+          ${spot.url ? `<a href="${spot.url}" target="_blank" rel="noopener">website →</a>` : ""}
+          ${spot.verified ? "" : "<small>⚠️ placeholder — verify</small>"}
+        </div>
+      </div>
+    `);
     const marker = new maplibregl.Marker({ element: el })
       .setLngLat(spot.location)
-      .setPopup(new maplibregl.Popup({ offset: 18 }).setHTML(
-        `<strong>${spot.name}</strong><br><em>${spot.type}</em><br>${spot.notes}` +
-        (spot.url ? `<br><a href="${spot.url}" target="_blank" rel="noopener">website →</a>` : "") +
-        (spot.verified ? "" : "<br><small>⚠️ placeholder — verify</small>")
-      ))
+      .setPopup(popup)
       .addTo(map);
+    el.addEventListener("click", () =>
+      map.flyTo({ center: spot.location, zoom: Math.max(map.getZoom(), 14), duration: 800 }));
     spotMarkers.push(marker);
   });
 }
@@ -125,18 +230,24 @@ map.on("load", async () => {
   const res = await fetch("data/liverpool/areas.geojson");
   areasFC = await res.json();
 
-  map.addSource("areas", { type: "geojson", data: areasFC });
+  map.addSource("areas", { type: "geojson", data: areasFC, promoteId: "postcode" });
   map.addLayer({
     id: "areas-fill",
     type: "fill",
     source: "areas",
-    paint: { "fill-color": "#999", "fill-opacity": 0.55 }
+    paint: {
+      "fill-color": "#999",
+      "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.8, 0.55]
+    }
   });
   map.addLayer({
     id: "areas-outline",
     type: "line",
     source: "areas",
-    paint: { "line-color": "#1c2430", "line-width": 1.2 }
+    paint: {
+      "line-color": "#1c2430",
+      "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 3, 1.2]
+    }
   });
   map.addLayer({
     id: "areas-label",
@@ -156,9 +267,23 @@ map.on("load", async () => {
 
   applyScores();
 
-  map.on("click", "areas-fill", e => showPanel(e.features[0].properties));
-  map.on("mouseenter", "areas-fill", () => map.getCanvas().style.cursor = "pointer");
-  map.on("mouseleave", "areas-fill", () => map.getCanvas().style.cursor = "");
+  map.on("mousemove", "areas-fill", e => {
+    map.getCanvas().style.cursor = "pointer";
+    const p = e.features[0].properties;
+    setHover(p.postcode, true);
+    hoverTip.setLngLat(e.lngLat)
+      .setHTML(`<strong>${p.postcode}</strong> · ${p.name}`)
+      .addTo(map);
+  });
+  map.on("mouseleave", "areas-fill", () => {
+    map.getCanvas().style.cursor = "";
+    setHover(null, false);
+    hoverTip.remove();
+  });
+  map.on("click", "areas-fill", e => {
+    const f = e.features[0];
+    showPanel(f.properties, f);
+  });
 });
 
 document.getElementById("layer-select").addEventListener("change", e => {

@@ -68,4 +68,51 @@ html, body, #app { height: 100%; font-family: -apple-system, "Segoe UI", Roboto,
 }
 
 .maplibregl-popup-content { font-size: 13px; }
-.spot-marker { font-size: 20px; cursor: pointer; text-shadow: 0 1px 3px rgba(0,0,0,.4); }
+
+.hover-tip .maplibregl-popup-content {
+  padding: 6px 10px; font-size: 13px; border-radius: 6px;
+  background: var(--ink); color: #fff; pointer-events: none;
+}
+.hover-tip .maplibregl-popup-tip { border-top-color: var(--ink); }
+
+.spot-popup .maplibregl-popup-content { padding: 12px 14px; border-radius: 10px; max-width: 260px; }
+.spot-card { display: flex; gap: 10px; align-items: flex-start; }
+.spot-icon { font-size: 26px; line-height: 1; }
+.spot-type { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #999; margin: 2px 0 6px; }
+.spot-card p { font-size: 13px; line-height: 1.4; margin-bottom: 6px; }
+.spot-card a { color: #1a6fd4; }
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+.spot-marker {
+  font-size: 22px; cursor: pointer; text-shadow: 0 1px 3px rgba(0,0,0,.4);
+  animation: pulse 2.4s ease-in-out infinite; transition: transform .15s ease;
+}
+.spot-marker.grown { transform: scale(1.5); animation-play-state: paused; }
+
+.bars { margin: 12px 0 4px; }
+.bar-row { display: grid; grid-template-columns: 84px 1fr 74px; align-items: center; gap: 8px; margin: 8px 0; font-size: 13px; }
+.bar-label { color: #555; }
+.bar-track { height: 10px; background: #eef1f4; border-radius: 999px; overflow: hidden; }
+.bar-fill { height: 100%; width: 0; border-radius: 999px; transition: width .7s cubic-bezier(.22,1,.36,1); }
+.bar-fill.crime { background: #c0564f; }
+.bar-text { font-size: 12px; color: #444; text-align: right; }
+
+.crime-box { margin-top: 16px; padding: 12px; background: #faf7f5; border: 1px solid #f0e4e0; border-radius: 8px; }
+.crime-box h3 { font-size: 14px; margin-bottom: 8px; }
+.crime-box h3 small { color: #999; font-weight: 400; }
+.crime-loading { font-size: 13px; color: #999; padding: 8px 0; }
+.crime-row { display: grid; grid-template-columns: 130px 1fr 34px; align-items: center; gap: 8px; margin: 6px 0; font-size: 12px; }
+.crime-name { color: #555; }
+.crime-box .src { display: block; margin-top: 8px; color: #bbb; font-size: 11px; }
+
+.panel-links { display: flex; gap: 8px; margin-top: 16px; }
+.panel-links a {
+  flex: 1; text-align: center; padding: 9px 6px; font-size: 13px; text-decoration: none;
+  border: 1px solid #dde3e8; border-radius: 8px; color: var(--ink); background: #fff;
+  transition: background .15s ease;
+}
+.panel-links a:hover { background: #f4f6f8; }
