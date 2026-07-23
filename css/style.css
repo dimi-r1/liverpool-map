@@ -82,16 +82,11 @@ html, body, #app { height: 100%; font-family: -apple-system, "Segoe UI", Roboto,
 .spot-card p { font-size: 13px; line-height: 1.4; margin-bottom: 6px; }
 .spot-card a { color: #1a6fd4; }
 
-@keyframes pulse {
-  0% { scale: 1; }
-  50% { scale: 1.18; }
-  100% { scale: 1; }
-}
 .spot-marker {
   font-size: 22px; cursor: pointer; text-shadow: 0 1px 3px rgba(0,0,0,.4);
-  animation: pulse 2.4s ease-in-out infinite; transition: scale .15s ease;
+  transition: scale .15s ease;
 }
-.spot-marker.grown { scale: 1.5; animation-play-state: paused; }
+.spot-marker.grown { scale: 1.35; }
 
 .bars { margin: 12px 0 4px; }
 .bar-row { display: grid; grid-template-columns: 84px 1fr 74px; align-items: center; gap: 8px; margin: 8px 0; font-size: 13px; }
