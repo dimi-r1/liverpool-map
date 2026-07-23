@@ -6,7 +6,10 @@
       "city": "liverpool",
       "name": "Fogo de Chão (formerly Fazenda)",
       "type": "restaurant",
-      "location": [-2.9917, 53.4076],
+      "location": [
+        -2.9917,
+        53.4076
+      ],
       "notes": "Upmarket churrasco rodizio at Exchange Flags, L2. The special-occasion one.",
       "url": "https://fogodechao.uk/location/liverpool/",
       "verified": true
@@ -15,7 +18,10 @@
       "city": "liverpool",
       "name": "Bem Brasil",
       "type": "restaurant",
-      "location": [-2.9845, 53.4033],
+      "location": [
+        -2.9845,
+        53.4033
+      ],
       "notes": "All-you-can-eat rodizio on Hanover Street, L1. Lively, great for groups.",
       "url": "https://www.bembrasilrestaurants.com/restaurants/liverpool/",
       "verified": true
@@ -24,7 +30,10 @@
       "city": "liverpool",
       "name": "Chico Brazil",
       "type": "restaurant",
-      "location": [-2.9827, 53.4036],
+      "location": [
+        -2.9827,
+        53.4036
+      ],
       "notes": "Authentic Brazilian on Hanover Street — 5.0 on TripAdvisor, top-5 restaurant in the city.",
       "url": "https://chicobrazil.co.uk",
       "verified": true
@@ -33,7 +42,10 @@
       "city": "liverpool",
       "name": "Fogo Brazil",
       "type": "restaurant",
-      "location": [-2.9776, 53.4026],
+      "location": [
+        -2.9776,
+        53.4026
+      ],
       "notes": "Rodizio on Bold Street, L1 — the city's famous indie food street.",
       "url": "https://fogobrazil.co.uk",
       "verified": true
@@ -42,7 +54,10 @@
       "city": "liverpool",
       "name": "Coco Brazil",
       "type": "restaurant",
-      "location": [-2.9799, 53.4039],
+      "location": [
+        -2.9799,
+        53.4039
+      ],
       "notes": "Steakhouse with unlimited grilled meats + salad bar, Bold Street area.",
       "url": "https://cocobrazil.co.uk",
       "verified": true
@@ -51,7 +66,10 @@
       "city": "liverpool",
       "name": "Copacabana",
       "type": "restaurant",
-      "location": [-2.9832, 53.4079],
+      "location": [
+        -2.9832,
+        53.4079
+      ],
       "notes": "Brazilian BBQ near Queen Square, city centre.",
       "url": "https://www.copacabanaliverpool.co.uk",
       "verified": true
@@ -60,7 +78,10 @@
       "city": "liverpool",
       "name": "Capoeira For All CIC",
       "type": "group",
-      "location": [-2.9686, 53.3928],
+      "location": [
+        -2.9686,
+        53.3928
+      ],
       "notes": "Community capoeira at John Archer Hall, 68 Upper Hill St (L8). Kids, teens and adults — beginners welcome.",
       "url": "https://www.capoeiraforall.org/classes/",
       "verified": true
@@ -69,7 +90,10 @@
       "city": "liverpool",
       "name": "Capoeira CDO North West (Mestre Parente)",
       "type": "group",
-      "location": [-2.8995, 53.3552],
+      "location": [
+        -2.8995,
+        53.3552
+      ],
       "notes": "Mestre Parente, 30+ years experience, teaching in Liverpool since 2002. Heald House, Heald Street, Garston (L19).",
       "url": "https://cdonw.co.uk",
       "verified": true

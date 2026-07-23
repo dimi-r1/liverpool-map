@@ -25,7 +25,7 @@ async function crimeStats([lng, lat]) {
 }
 
 for (const a of curated.features) {
-  if (a.crimeCats) { console.log(`${a.postcode}: cached`); continue; }
+  if (a.crimeCats && a.crimeDate === date) { console.log(`${a.postcode}: cached`); continue; }
   const { total, cats } = await crimeStats(a.center);
   a.crimeTotal = total;
   a.crimeCats = JSON.stringify(cats);
