@@ -109,10 +109,14 @@ html, body, #app { height: 100%; font-family: -apple-system, "Segoe UI", Roboto,
 .crime-name { color: #555; }
 .crime-box .src { display: block; margin-top: 8px; color: #bbb; font-size: 11px; }
 
-.panel-links { display: flex; gap: 8px; margin-top: 16px; }
+.rentals { margin-top: 16px; }
+.rentals h3 { font-size: 14px; margin-bottom: 8px; }
+.panel-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.panel-links.single { margin-top: 8px; }
 .panel-links a {
-  flex: 1; text-align: center; padding: 9px 6px; font-size: 13px; text-decoration: none;
+  flex: 1 1 30%; text-align: center; padding: 9px 6px; font-size: 13px; text-decoration: none;
   border: 1px solid #dde3e8; border-radius: 8px; color: var(--ink); background: #fff;
-  transition: background .15s ease;
+  transition: background .15s ease, transform .15s ease;
 }
-.panel-links a:hover { background: #f4f6f8; }
+.panel-links a:hover { background: #f4f6f8; transform: translateY(-1px); }
+.panel-links.single a { flex: 1 1 100%; }

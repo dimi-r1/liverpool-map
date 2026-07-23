@@ -138,6 +138,20 @@ function crimeBreakdownHTML(p) {
     </div>`).join("");
 }
 
+function rentalLinks(p) {
+  const pc = p.postcode;
+  const low = pc.toLowerCase();
+  const links = [
+    ["Rightmove", `https://www.rightmove.co.uk/property-to-rent/find.html?locationIdentifier=${encodeURIComponent(p.rightmoveId || "")}&includeLetAgreed=false`],
+    ["Zoopla", `https://www.zoopla.co.uk/to-rent/property/${low}/?q=${pc}&price_frequency=per_month`],
+    ["OnTheMarket", `https://www.onthemarket.com/to-rent/property/${low}/`],
+    ["OpenRent", `https://www.openrent.co.uk/properties-to-rent?term=${pc}`],
+    ["SpareRoom", `https://www.spareroom.co.uk/flatshare/?search=${pc}`]
+  ];
+  return links.map(([name, url]) =>
+    `<a href="${url}" target="_blank" rel="noopener">${name} →</a>`).join("");
+}
+
 function showPanel(p, feature) {
   const rentScore = LAYERS.rent.score(p);
   const commuteScore = LAYERS.commute.score(p);
@@ -159,9 +173,12 @@ function showPanel(p, feature) {
       ${crimeBreakdownHTML(p)}
       <small class="src">Source: police.uk open data</small>
     </div>
-    <div class="panel-links">
-      <a href="https://www.google.com/maps/search/?api=1&query=${areaQuery}" target="_blank" rel="noopener">📍 Google Maps</a>
-      <a href="https://www.rightmove.co.uk/property-to-rent/find.html?searchLocation=${encodeURIComponent(p.postcode)}" target="_blank" rel="noopener">🏠 Rentals on Rightmove</a>
+    <div class="rentals">
+      <h3>🏠 Find rentals in ${p.postcode}</h3>
+      <div class="panel-links">${rentalLinks(p)}</div>
+    </div>
+    <div class="panel-links single">
+      <a href="https://www.google.com/maps/search/?api=1&query=${areaQuery}" target="_blank" rel="noopener">📍 Explore on Google Maps</a>
     </div>
   `;
   document.getElementById("panel").classList.remove("hidden");
