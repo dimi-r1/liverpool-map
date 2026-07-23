@@ -293,9 +293,7 @@ async function showSchools() {
     const el = document.createElement("div");
     el.className = "spot-marker school-marker";
     el.style.setProperty("--school-color", color);
-    el.textContent = s.phase === "secondary" ? "🎓" : "🏫";
-    el.addEventListener("mouseenter", () => el.classList.add("grown"));
-    el.addEventListener("mouseleave", () => el.classList.remove("grown"));
+    el.innerHTML = `<span class="spot-emoji">${s.phase === "secondary" ? "🎓" : "🏫"}</span>`;
     const [label] = OFSTED_STYLE[s.ofsted] || OFSTED_STYLE[null];
     const popup = new maplibregl.Popup({ offset: 24, className: "spot-popup" }).setHTML(`
       <div class="spot-card">
@@ -323,9 +321,7 @@ async function showCoolStuff(filter) {
   items.filter(s => filter === "all" || s.type === filter).forEach(s => {
     const el = document.createElement("div");
     el.className = "spot-marker";
-    el.textContent = TYPE_ICONS[s.type] || "📍";
-    el.addEventListener("mouseenter", () => el.classList.add("grown"));
-    el.addEventListener("mouseleave", () => el.classList.remove("grown"));
+    el.innerHTML = `<span class="spot-emoji">${TYPE_ICONS[s.type] || "📍"}</span>`;
     const popup = new maplibregl.Popup({ offset: 24, className: "spot-popup" }).setHTML(`
       <div class="spot-card">
         <div class="spot-icon">${TYPE_ICONS[s.type] || "📍"}</div>
@@ -352,9 +348,7 @@ async function showCommunity(id) {
   data.spots.filter(s => s.city === "liverpool").forEach(spot => {
     const el = document.createElement("div");
     el.className = "spot-marker";
-    el.textContent = TYPE_ICONS[spot.type] || TYPE_ICONS.other;
-    el.addEventListener("mouseenter", () => el.classList.add("grown"));
-    el.addEventListener("mouseleave", () => el.classList.remove("grown"));
+    el.innerHTML = `<span class="spot-emoji">${TYPE_ICONS[spot.type] || TYPE_ICONS.other}</span>`;
     const popup = new maplibregl.Popup({ offset: 24, className: "spot-popup" }).setHTML(`
       <div class="spot-card">
         <div class="spot-icon">${TYPE_ICONS[spot.type] || TYPE_ICONS.other}</div>
