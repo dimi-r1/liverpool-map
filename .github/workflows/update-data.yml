@@ -22,6 +22,7 @@ jobs:
           node scripts/fetch-rightmove-ids.mjs
           node scripts/fetch-community.mjs brazilian
           node scripts/fetch-coolstuff.mjs
+          node scripts/fetch-schools.mjs
           node scripts/build-areas.mjs
       - name: Commit if changed
         run: |

@@ -16,11 +16,11 @@ const QUERIES = {
 };
 
 const CURATED = [
-  { name: "Princes parkrun", type: "parkrun", location: [-2.9642, 53.3883], notes: "Free timed 5k every Saturday 9am, Princes Park (L8). The friendliest way to meet people as a newcomer." },
-  { name: "Sefton Park parkrun", type: "parkrun", location: [-2.9380, 53.3810], notes: "Free timed 5k every Saturday 9am, Sefton Park (L17). Huge post-run coffee scene at Lark Lane." },
-  { name: "Croxteth Hall parkrun", type: "parkrun", location: [-2.9050, 53.4400], notes: "Free timed 5k every Saturday 9am through Croxteth country park." },
-  { name: "Birkenhead parkrun", type: "parkrun", location: [-3.0400, 53.3930], notes: "Free timed 5k every Saturday 9am in Birkenhead Park — the park that inspired Central Park, NYC." },
-  { name: "New Brighton parkrun", type: "parkrun", location: [-3.0350, 53.4420], notes: "Free timed 5k every Saturday 9am along the Marine Lake / promenade. Flat and fast." },
+  { name: "Princes parkrun", type: "parkrun", location: [-2.9642, 53.3883], url: "https://www.parkrun.org.uk/princes/", notes: "Free timed 5k every Saturday 9am, Princes Park (L8). The friendliest way to meet people as a newcomer." },
+  { name: "Croxteth Hall parkrun", type: "parkrun", location: [-2.9050, 53.4400], url: "https://www.parkrun.org.uk/croxtethhall/", notes: "Free timed 5k every Saturday 9am through Croxteth country park." },
+  { name: "Birkenhead parkrun", type: "parkrun", location: [-3.0400, 53.3930], url: "https://www.parkrun.org.uk/birkenhead/", notes: "Free timed 5k every Saturday 9am in Birkenhead Park — the park that inspired Central Park, NYC." },
+  { name: "Crosby parkrun", type: "parkrun", location: [-3.0250, 53.4850], url: "https://www.parkrun.org.uk/crosby/", notes: "Free timed 5k every Saturday 9am at Crosby — near the beach with the Gormley statues." },
+  { name: "Knowsley parkrun", type: "parkrun", location: [-2.8630, 53.4400], url: "https://www.parkrun.org.uk/knowsley/", notes: "Free timed 5k every Saturday 9am in Knowsley, handy for L32/L36 postcodes." },
   { name: "Liverpool Running Club", type: "club", location: [-2.984, 53.404], notes: "Big social running club, multiple weekly sessions from the city centre. All paces welcome.", url: "https://www.liverpoolrunningclub.co.uk" },
   { name: "Penny Lane Striders", type: "club", location: [-2.920, 53.390], notes: "Friendly south-Liverpool running club, runs from the Penny Lane / Wavertree area.", url: "https://www.pennylanestriders.org.uk" },
   { name: "Wirral AC", type: "club", location: [-3.0430, 53.3930], notes: "Wirral's main athletics & running club, based at Bebington Oval.", url: "https://www.wirralac.co.uk" },
@@ -83,7 +83,13 @@ for (const [type, body] of Object.entries(QUERIES)) {
     const loc = [lon, lat];
     if (items.some(s => s.name.toLowerCase() === name.toLowerCase() && dist(s.location, loc) < 0.3)) continue;
     if (items.some(s => s.type === type && dist(s.location, loc) < 0.02)) continue;
-    items.push({ name, type, location: [Math.round(lon * 1e6) / 1e6, Math.round(lat * 1e6) / 1e6], source: "osm" });
+    items.push({
+      name, type,
+      location: [Math.round(lon * 1e6) / 1e6, Math.round(lat * 1e6) / 1e6],
+      url: e.tags.website || e.tags["contact:website"] || e.tags.url || undefined,
+      source: "osm",
+      osmId: `${e.type}/${e.id}`
+    });
     added++;
   }
   console.log(`${type}: +${added} (${data.elements.length} raw)`);

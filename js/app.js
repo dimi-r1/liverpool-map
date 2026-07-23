@@ -25,7 +25,14 @@ const LAYERS = {
 
 const TYPE_ICONS = { restaurant: "🍖", shop: "🛒", church: "⛪", group: "🤸", barber: "💈", other: "📍",
   park: "🌳", beach: "🏖️", swim: "🏊", gym: "💪", attraction: "🎡", stadium: "🏟️",
-  nature: "🦆", marina: "⛵", golf: "⛳", watersports: "🚣", parkrun: "🏃", club: "👟", landmark: "📸" };
+  nature: "🦆", marina: "⛵", golf: "⛳", watersports: "🚣", parkrun: "🏃", club: "👟", landmark: "📸",
+  school: "🏫" };
+
+const OFSTED_STYLE = {
+  5: ["Outstanding", "#1e8e4e"], 4: ["Good", "#5cb85c"],
+  2: ["Needs improvement", "#e6a817"], 1: ["Inadequate", "#d64545"],
+  null: ["Not yet rated", "#999"]
+};
 
 const CRIME_LABELS = {
   "anti-social-behaviour": "Anti-social behaviour",
@@ -48,7 +55,9 @@ let currentLayer = "overall";
 let areasFC = null;
 let spotMarkers = [];
 let coolMarkers = [];
+let schoolMarkers = [];
 let coolStuff = null;
+let schools = null;
 let hoveredPostcode = null;
 
 function km(a, b) {
@@ -59,6 +68,28 @@ function km(a, b) {
 async function loadCoolStuff() {
   if (!coolStuff) coolStuff = (await (await fetch("data/liverpool/coolstuff.json")).json()).items;
   return coolStuff;
+}
+
+async function loadSchools() {
+  if (!schools) schools = (await (await fetch("data/liverpool/schools.json")).json()).schools;
+  return schools;
+}
+
+function spotLink(s) {
+  if (s.url) return s.url;
+  return `https://www.google.com/maps/search/?api=1&query=${s.location[1]},${s.location[0]}`;
+}
+
+function schoolLink(s) {
+  return s.website || `https://reports.ofsted.gov.uk/search?q=${encodeURIComponent(s.name)}`;
+}
+
+function nearbySchools(center, limit = 5) {
+  if (!schools) return [];
+  return [...schools]
+    .sort((a, b) => km(a.location, center) - km(b.location, center))
+    .filter(s => km(s.location, center) <= 2)
+    .slice(0, limit);
 }
 
 function nearbyCool(center, limit = 6) {
@@ -191,6 +222,7 @@ function showPanel(p, feature) {
     <div class="verdict">💬 ${p.verdict}</div>
     <ul class="notes">${asArr(p.notes).map(n => `<li>${n}</li>`).join("")}</ul>
     <div class="cool-box" id="cool-box"><h3>✨ Nearby cool stuff</h3><div class="crime-loading">Loading…</div></div>
+    <div class="school-box" id="school-box"><h3>🏫 Nearest schools</h3><div class="crime-loading">Loading…</div></div>
     <div class="crime-box">
       <h3>🚔 Crime breakdown <small>(${p.crimeDate || "latest"}, ${p.crimeTotal ?? "?"} reported, ~1mi radius)</small></h3>
       ${crimeBreakdownHTML(p)}
@@ -219,10 +251,26 @@ function showPanel(p, feature) {
     box.innerHTML = `<h3>✨ Nearby cool stuff</h3>` + (near.length
       ? near.map(s => `<div class="cool-row">
           <span class="cool-icon">${TYPE_ICONS[s.type] || "📍"}</span>
-          <span class="cool-name">${s.name}${s.notes ? `<small>${s.notes}</small>` : ""}</span>
+          <span class="cool-name"><a href="${spotLink(s)}" target="_blank" rel="noopener">${s.name}</a>${s.notes ? `<small>${s.notes}</small>` : ""}</span>
           <span class="cool-dist">${km(s.location, center).toFixed(1)}km</span>
         </div>`).join("")
       : `<div class="crime-loading">Nothing mapped nearby — yet.</div>`);
+  });
+
+  loadSchools().then(() => {
+    const near = nearbySchools(center);
+    const box = document.getElementById("school-box");
+    if (!box) return;
+    box.innerHTML = `<h3>🏫 Nearest schools <small>(Ofsted rated)</small></h3>` + (near.length
+      ? near.map(s => {
+          const [label, color] = OFSTED_STYLE[s.ofsted] || OFSTED_STYLE[null];
+          return `<div class="cool-row">
+            <span class="cool-icon">${s.phase === "secondary" ? "🎓" : "🏫"}</span>
+            <span class="cool-name"><a href="${schoolLink(s)}" target="_blank" rel="noopener">${s.name}</a><small>${s.phase} · ${s.type}</small></span>
+            <span class="pill" style="background:${color}">${label}</span>
+          </div>`;
+        }).join("")
+      : `<div class="crime-loading">No schools within 2km.</div>`);
   });
 }
 
@@ -234,11 +282,43 @@ function clearSpots() {
 function clearCool() {
   coolMarkers.forEach(m => m.remove());
   coolMarkers = [];
+  schoolMarkers.forEach(m => m.remove());
+  schoolMarkers = [];
+}
+
+async function showSchools() {
+  const items = await loadSchools();
+  items.forEach(s => {
+    const [, color] = OFSTED_STYLE[s.ofsted] || OFSTED_STYLE[null];
+    const el = document.createElement("div");
+    el.className = "spot-marker school-marker";
+    el.style.setProperty("--school-color", color);
+    el.textContent = s.phase === "secondary" ? "🎓" : "🏫";
+    el.addEventListener("mouseenter", () => el.classList.add("grown"));
+    el.addEventListener("mouseleave", () => el.classList.remove("grown"));
+    const [label] = OFSTED_STYLE[s.ofsted] || OFSTED_STYLE[null];
+    const popup = new maplibregl.Popup({ offset: 24, className: "spot-popup" }).setHTML(`
+      <div class="spot-card">
+        <div class="spot-icon">${s.phase === "secondary" ? "🎓" : "🏫"}</div>
+        <div>
+          <strong><a href="${schoolLink(s)}" target="_blank" rel="noopener">${s.name}</a></strong>
+          <div class="spot-type">${s.phase} · ${s.type}</div>
+          <p>Ofsted: <strong style="color:${color}">${label}</strong>${s.postcode ? ` · ${s.postcode}` : ""}</p>
+          <a href="https://reports.ofsted.gov.uk/search?q=${encodeURIComponent(s.name)}" target="_blank" rel="noopener">Ofsted report →</a>
+        </div>
+      </div>
+    `);
+    const marker = new maplibregl.Marker({ element: el }).setLngLat(s.location).setPopup(popup).addTo(map);
+    el.addEventListener("click", () =>
+      map.flyTo({ center: s.location, zoom: Math.max(map.getZoom(), 14), duration: 800 }));
+    schoolMarkers.push(marker);
+  });
 }
 
 async function showCoolStuff(filter) {
   clearCool();
   if (!filter) return;
+  if (filter === "schools") return showSchools();
   const items = await loadCoolStuff();
   items.filter(s => filter === "all" || s.type === filter).forEach(s => {
     const el = document.createElement("div");
@@ -250,10 +330,10 @@ async function showCoolStuff(filter) {
       <div class="spot-card">
         <div class="spot-icon">${TYPE_ICONS[s.type] || "📍"}</div>
         <div>
-          <strong>${s.name}</strong>
+          <strong><a href="${spotLink(s)}" target="_blank" rel="noopener">${s.name}</a></strong>
           <div class="spot-type">${s.type}</div>
           ${s.notes ? `<p>${s.notes}</p>` : ""}
-          ${s.url ? `<a href="${s.url}" target="_blank" rel="noopener">website →</a>` : ""}
+          <a href="${spotLink(s)}" target="_blank" rel="noopener">${s.url ? "website →" : "directions →"}</a>
         </div>
       </div>
     `);
@@ -279,10 +359,10 @@ async function showCommunity(id) {
       <div class="spot-card">
         <div class="spot-icon">${TYPE_ICONS[spot.type] || TYPE_ICONS.other}</div>
         <div>
-          <strong>${spot.name}</strong>
+          <strong><a href="${spotLink(spot)}" target="_blank" rel="noopener">${spot.name}</a></strong>
           <div class="spot-type">${spot.type}</div>
           <p>${spot.notes}</p>
-          ${spot.url ? `<a href="${spot.url}" target="_blank" rel="noopener">website →</a>` : ""}
+          <a href="${spotLink(spot)}" target="_blank" rel="noopener">${spot.url ? "website →" : "directions →"}</a>
           ${spot.verified ? "" : "<small>⚠️ placeholder — verify</small>"}
         </div>
       </div>
