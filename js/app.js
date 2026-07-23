@@ -261,7 +261,7 @@ function showPanel(p, feature) {
     const near = nearbySchools(center);
     const box = document.getElementById("school-box");
     if (!box) return;
-    box.innerHTML = `<h3>🏫 Nearest schools <small>(Ofsted rated)</small></h3>` + (near.length
+    box.innerHTML = `<h3>🏫 Schools in the area <small>(Ofsted rated)</small></h3>` + (near.length
       ? near.map(s => {
           const [label, color] = OFSTED_STYLE[s.ofsted] || OFSTED_STYLE[null];
           return `<div class="cool-row">
@@ -270,7 +270,9 @@ function showPanel(p, feature) {
             <span class="pill" style="background:${color}">${label}</span>
           </div>`;
         }).join("")
-      : `<div class="crime-loading">No schools within 2km.</div>`);
+      : `<div class="crime-loading">No schools within 2km.</div>`) + `
+      <small class="src">Admission is by exact home address & yearly distance cutoffs — always check with the council before signing a tenancy:
+      <a href="${p.side === "wirral" ? "https://www.wirral.gov.uk/schools-and-learning/school-admissions" : "https://liverpool.gov.uk/schools-and-learning/school-admissions/"}" target="_blank" rel="noopener">${p.side === "wirral" ? "Wirral" : "Liverpool"} school admissions →</a></small>`;
   });
 }
 
