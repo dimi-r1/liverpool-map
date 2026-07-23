@@ -46,7 +46,11 @@ let currentLayer = "overall";
 let areasFC = null;
 let spotMarkers = [];
 let hoveredPostcode = null;
-let panelFetchId = 0;
+
+function asArr(v) {
+  if (Array.isArray(v)) return v;
+  try { return JSON.parse(v); } catch { return []; }
+}
 
 const map = new maplibregl.Map({
   container: "map",
@@ -120,8 +124,21 @@ function bar(label, score, text) {
   </div>`;
 }
 
+function crimeBreakdownHTML(p) {
+  const cats = asArr(p.crimeCats);
+  const entries = Array.isArray(cats) ? [] : Object.entries(cats);
+  if (!entries.length) return `<div class="crime-loading">No breakdown available.</div>`;
+  const top = entries.sort((a, b) => b[1] - a[1]).slice(0, 6);
+  const max = top[0][1];
+  return top.map(([cat, n]) => `
+    <div class="crime-row">
+      <span class="crime-name">${CRIME_LABELS[cat] || cat}</span>
+      <div class="bar-track"><div class="bar-fill crime" data-width="${Math.round(n / max * 100)}"></div></div>
+      <span class="bar-text">${n}</span>
+    </div>`).join("");
+}
+
 function showPanel(p, feature) {
-  const fetchId = ++panelFetchId;
   const rentScore = LAYERS.rent.score(p);
   const commuteScore = LAYERS.commute.score(p);
   const areaQuery = encodeURIComponent(`${p.postcode} ${p.side === "wirral" ? "Wirral" : "Liverpool"}`);
@@ -136,10 +153,11 @@ function showPanel(p, feature) {
       ${bar("Commute", commuteScore, "~" + p.commuteMins + " mins")}
     </div>
     <div class="verdict">💬 ${p.verdict}</div>
-    <ul class="notes">${p.notes.map(n => `<li>${n}</li>`).join("")}</ul>
+    <ul class="notes">${asArr(p.notes).map(n => `<li>${n}</li>`).join("")}</ul>
     <div class="crime-box">
-      <h3>🚔 Crime breakdown <small>(${p.crimeDate || "latest"}, ~1mi radius)</small></h3>
-      <div class="crime-loading">Loading live police.uk data…</div>
+      <h3>🚔 Crime breakdown <small>(${p.crimeDate || "latest"}, ${p.crimeTotal ?? "?"} reported, ~1mi radius)</small></h3>
+      ${crimeBreakdownHTML(p)}
+      <small class="src">Source: police.uk open data</small>
     </div>
     <div class="panel-links">
       <a href="https://www.google.com/maps/search/?api=1&query=${areaQuery}" target="_blank" rel="noopener">📍 Google Maps</a>
@@ -152,40 +170,6 @@ function showPanel(p, feature) {
     document.querySelectorAll(".bar-fill").forEach(el => el.style.width = el.dataset.width + "%"));
 
   if (feature) map.fitBounds(featureBounds(feature), { padding: { top: 60, bottom: 60, left: 60, right: 400 }, duration: 900, maxZoom: 13.5 });
-
-  loadCrimeBreakdown(p, fetchId);
-}
-
-async function loadCrimeBreakdown(p, fetchId) {
-  try {
-    const res = await fetch(`https://data.police.uk/api/crimes-street/all-crime?lat=${p.center[1]}&lng=${p.center[0]}&date=${p.crimeDate}`);
-    if (!res.ok) throw new Error(res.status);
-    const crimes = await res.json();
-    if (fetchId !== panelFetchId) return;
-
-    const counts = {};
-    crimes.forEach(c => counts[c.category] = (counts[c.category] || 0) + 1);
-    const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
-    const max = top[0] ? top[0][1] : 1;
-
-    const box = document.querySelector(".crime-box");
-    if (!box) return;
-    box.innerHTML = `
-      <h3>🚔 Crime breakdown <small>(${p.crimeDate}, ${crimes.length} reported)</small></h3>
-      ${top.map(([cat, n]) => `
-        <div class="crime-row">
-          <span class="crime-name">${CRIME_LABELS[cat] || cat}</span>
-          <div class="bar-track"><div class="bar-fill crime" data-width="${Math.round(n / max * 100)}"></div></div>
-          <span class="bar-text">${n}</span>
-        </div>`).join("")}
-      <small class="src">Source: police.uk open data</small>
-    `;
-    requestAnimationFrame(() =>
-      box.querySelectorAll(".bar-fill").forEach(el => el.style.width = el.dataset.width + "%"));
-  } catch {
-    const box = document.querySelector(".crime-loading");
-    if (box && fetchId === panelFetchId) box.textContent = "Couldn't load live crime data right now.";
-  }
 }
 
 function clearSpots() {
@@ -282,8 +266,15 @@ map.on("load", async () => {
   });
   map.on("click", "areas-fill", e => {
     const f = e.features[0];
+    history.replaceState(null, "", "#" + f.properties.postcode);
     showPanel(f.properties, f);
   });
+
+  const hash = decodeURIComponent(location.hash.slice(1)).toUpperCase();
+  if (hash) {
+    const f = areasFC.features.find(f => f.properties.postcode === hash);
+    if (f) showPanel(f.properties, f);
+  }
 });
 
 document.getElementById("layer-select").addEventListener("change", e => {

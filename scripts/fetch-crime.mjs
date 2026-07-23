@@ -7,18 +7,31 @@ const lastUpdated = await (await fetch("https://data.police.uk/api/crime-last-up
 const date = lastUpdated.date.slice(0, 7);
 console.log("crime data month:", date);
 
-async function crimeCount([lng, lat]) {
+async function crimeStats([lng, lat]) {
   const url = `https://data.police.uk/api/crimes-street/all-crime?lat=${lat}&lng=${lng}&date=${date}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`${res.status} for ${url}`);
-  return (await res.json()).length;
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const res = await fetch(url);
+    if (res.status === 429) {
+      await new Promise(r => setTimeout(r, 2000 * (attempt + 1)));
+      continue;
+    }
+    if (!res.ok) throw new Error(`${res.status} for ${url}`);
+    const crimes = await res.json();
+    const cats = {};
+    crimes.forEach(c => cats[c.category] = (cats[c.category] || 0) + 1);
+    return { total: crimes.length, cats };
+  }
+  throw new Error(`rate limited: ${url}`);
 }
 
 for (const a of curated.features) {
-  a.crimeTotal = await crimeCount(a.center);
+  if (a.crimeCats) { console.log(`${a.postcode}: cached`); continue; }
+  const { total, cats } = await crimeStats(a.center);
+  a.crimeTotal = total;
+  a.crimeCats = JSON.stringify(cats);
   a.crimeDate = date;
-  console.log(`${a.postcode}: ${a.crimeTotal}`);
-  await new Promise(r => setTimeout(r, 300));
+  console.log(`${a.postcode}: ${total}`);
+  await new Promise(r => setTimeout(r, 600));
 }
 
 const sorted = [...curated.features].sort((x, y) => x.crimeTotal - y.crimeTotal);
