@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scouse Compass — Where should I live?</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <header id="topbar">
+      <h1>🧭 Scouse Compass</h1>
+      <div id="controls">
+        <select id="layer-select" title="Map layer">
+          <option value="overall">Overall vibe</option>
+          <option value="safety">Safety</option>
+          <option value="rent">Rent (cheap → pricey)</option>
+          <option value="commute">Commute to city centre</option>
+        </select>
+        <select id="community-select" title="Community layer">
+          <option value="">Community: off</option>
+          <option value="brazilian">🇧🇷 Brazilian</option>
+        </select>
+      </div>
+    </header>
+
+    <div id="map"></div>
+
+    <aside id="panel" class="hidden">
+      <button id="panel-close" aria-label="Close">×</button>
+      <div id="panel-content"></div>
+    </aside>
+
+    <div id="legend"></div>
+
+    <div id="intro" class="modal">
+      <div class="modal-card">
+        <h2>Welcome to Merseyside 👋</h2>
+        <p><strong>Liverpool</strong> sits on the east bank of the River Mersey.
+        Across the water is the <strong>Wirral peninsula</strong> — same metro area,
+        different vibe, different postcodes.</p>
+        <ul>
+          <li><strong>L</strong> postcodes → Liverpool side (L1 = city centre, numbers grow outward-ish)</li>
+          <li><strong>CH</strong> postcodes → Wirral side (Birkenhead, Wallasey, West Kirby, Heswall…)</li>
+          <li><strong>WA / PR / WN</strong> → further out (Warrington, Southport, St Helens)</li>
+        </ul>
+        <p>Click any coloured area to see rent, safety, commute and honest mate advice.
+        Turn on the 🇧🇷 layer to find Brazilian shops, food and community spots.</p>
+        <p class="disclaimer">Scores are indicative curations, not official statistics — always visit an area before signing a tenancy.</p>
+        <button id="intro-close">Show me the map →</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

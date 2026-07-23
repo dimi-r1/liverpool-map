@@ -1,0 +1,842 @@
+{
+  "city": "liverpool",
+  "label": "Liverpool & Merseyside",
+  "center": [
+    -2.98,
+    53.4
+  ],
+  "zoom": 10.5,
+  "features": [
+    {
+      "postcode": "L1",
+      "name": "City Centre & Baltic Triangle",
+      "side": "liverpool",
+      "center": [
+        -2.984,
+        53.402
+      ],
+      "overall": 4,
+      "safety": 1,
+      "rentAvg": 950,
+      "rentBand": "£££",
+      "commuteMins": 0,
+      "verdict": "If you want to walk everywhere and never need a car, this is it. Baltic Triangle is the creative/nightlife hub. You pay for the convenience.",
+      "notes": [
+        "Mostly flats and new-builds",
+        "Lively at night — noisy on weekends",
+        "Everything on your doorstep"
+      ],
+      "crimeTotal": 1722,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L2",
+      "name": "Business District & Waterfront",
+      "side": "liverpool",
+      "center": [
+        -2.992,
+        53.411
+      ],
+      "overall": 4,
+      "safety": 1,
+      "rentAvg": 900,
+      "rentBand": "£££",
+      "commuteMins": 5,
+      "verdict": "Dale Street, the waterfront, Moorfields. Quieter than L1 at night, great for Pier Head walks.",
+      "notes": [
+        "Offices by day, calm by night",
+        "Very few supermarkets — walk to L1"
+      ],
+      "crimeTotal": 1611,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L3",
+      "name": "Vauxhall & North Docks",
+      "side": "liverpool",
+      "center": [
+        -2.997,
+        53.425
+      ],
+      "overall": 2,
+      "safety": 2,
+      "rentAvg": 650,
+      "rentBand": "£",
+      "commuteMins": 10,
+      "verdict": "Cheap and close to town, but it's one of the most deprived wards in England. Visit before you commit.",
+      "notes": [
+        "New developments creeping north from the centre",
+        "Sparse amenities"
+      ],
+      "crimeTotal": 293,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L4",
+      "name": "Anfield & Walton",
+      "side": "liverpool",
+      "center": [
+        -2.958,
+        53.432
+      ],
+      "overall": 2,
+      "safety": 1,
+      "rentAvg": 600,
+      "rentBand": "£",
+      "commuteMins": 15,
+      "verdict": "Home of Liverpool FC — buzzing on matchdays, rough around the edges otherwise. Very cheap, but do your homework street by street.",
+      "notes": [
+        "Matchday traffic is chaos",
+        "Some streets fine, some not — varies block to block"
+      ],
+      "crimeTotal": 655,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L5",
+      "name": "Everton",
+      "side": "liverpool",
+      "center": [
+        -2.975,
+        53.423
+      ],
+      "overall": 2,
+      "safety": 1,
+      "rentAvg": 620,
+      "rentBand": "£",
+      "commuteMins": 12,
+      "verdict": "Next to the new Everton stadium at Bramley-Moore Dock, so it's changing fast. Right now: cheap, rough, up-and-coming.",
+      "notes": [
+        "Stadium regeneration may lift the area",
+        "Great views from Everton Brow"
+      ],
+      "crimeTotal": 718,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L6",
+      "name": "Kensington & Fairfield",
+      "side": "liverpool",
+      "center": [
+        -2.957,
+        53.414
+      ],
+      "overall": 2,
+      "safety": 1,
+      "rentAvg": 580,
+      "rentBand": "£",
+      "commuteMins": 15,
+      "verdict": "Big student population near the universities. Cheap rooms, mixed streets, standard big-city caution applies.",
+      "notes": [
+        "Popular with students",
+        "Good bus links into town"
+      ],
+      "crimeTotal": 849,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L7",
+      "name": "Edge Hill & Knowledge Quarter",
+      "side": "liverpool",
+      "center": [
+        -2.962,
+        53.402
+      ],
+      "overall": 3,
+      "safety": 1,
+      "rentAvg": 650,
+      "rentBand": "£",
+      "commuteMins": 10,
+      "verdict": "Student central — unis, hospitals, cheap eats. Fine if you're young and don't mind hustle.",
+      "notes": [
+        "Loads of takeaways",
+        "Walkable to the centre and both unis"
+      ],
+      "crimeTotal": 1452,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L8",
+      "name": "Toxteth, Dingle & Princes Park",
+      "side": "liverpool",
+      "center": [
+        -2.967,
+        53.388
+      ],
+      "overall": 3,
+      "safety": 2,
+      "rentAvg": 620,
+      "rentBand": "£",
+      "commuteMins": 12,
+      "verdict": "Has a rep from the 80s, but Princes Park side is genuinely nice now — creatives, families, Lark Lane round the corner. Dingle side is rougher. Street-by-street call.",
+      "notes": [
+        "Princes Park and Granby: up-and-coming",
+        "Lark Lane bars & restaurants nearby",
+        "Great multicultural food scene"
+      ],
+      "crimeTotal": 545,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L9",
+      "name": "Walton, Aintree & Fazakerley",
+      "side": "liverpool",
+      "center": [
+        -2.945,
+        53.452
+      ],
+      "overall": 3,
+      "safety": 2,
+      "rentAvg": 640,
+      "rentBand": "£",
+      "commuteMins": 25,
+      "verdict": "Proper residential north Liverpool. Aintree has the racecourse and good rail links. Unflashy, decent value.",
+      "notes": [
+        "Aintree station → town in 15 mins",
+        "Home of the Grand National"
+      ],
+      "crimeTotal": 355,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L11",
+      "name": "Norris Green & Clubmoor",
+      "side": "liverpool",
+      "center": [
+        -2.915,
+        53.445
+      ],
+      "overall": 2,
+      "safety": 3,
+      "rentAvg": 600,
+      "rentBand": "£",
+      "commuteMins": 25,
+      "verdict": "Big 1930s council estate, one of the poorest areas in the city. Cheap rents reflect that.",
+      "notes": [
+        "Limited amenities",
+        "Check specific streets carefully"
+      ],
+      "crimeTotal": 266,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L12",
+      "name": "West Derby & Croxteth",
+      "side": "liverpool",
+      "center": [
+        -2.905,
+        53.427
+      ],
+      "overall": 3,
+      "safety": 3,
+      "rentAvg": 700,
+      "rentBand": "££",
+      "commuteMins": 25,
+      "verdict": "West Derby village is leafy and old-school nice; Croxteth is rougher. Same postcode, different worlds — check which end.",
+      "notes": [
+        "West Derby village: pubs, greens, families",
+        "Croxteth Park for walks"
+      ],
+      "crimeTotal": 243,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L13",
+      "name": "Old Swan & Tuebrook",
+      "side": "liverpool",
+      "center": [
+        -2.915,
+        53.41
+      ],
+      "overall": 3,
+      "safety": 2,
+      "rentAvg": 620,
+      "rentBand": "£",
+      "commuteMins": 20,
+      "verdict": "Solid working-class area, good value, decent shops on Prescot Road. Nothing fancy, nothing scary.",
+      "notes": [
+        "Good bus corridor",
+        "Handy for Alder Hey hospital"
+      ],
+      "crimeTotal": 417,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L14",
+      "name": "Broadgreen & Dovecot",
+      "side": "liverpool",
+      "center": [
+        -2.895,
+        53.405
+      ],
+      "overall": 3,
+      "safety": 3,
+      "rentAvg": 650,
+      "rentBand": "£",
+      "commuteMins": 25,
+      "verdict": "Quiet residential, Edge Lane retail park nearby. Boring in a good way.",
+      "notes": [
+        "Big retail park for shopping",
+        "Family area"
+      ],
+      "crimeTotal": 219,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L15",
+      "name": "Wavertree",
+      "side": "liverpool",
+      "center": [
+        -2.925,
+        53.397
+      ],
+      "overall": 4,
+      "safety": 2,
+      "rentAvg": 680,
+      "rentBand": "££",
+      "commuteMins": 18,
+      "verdict": "The classic student/young-professional area — Smithdown Road is legendary. Great value, great bus links, always something going on.",
+      "notes": [
+        "Smithdown Rd: bars, shops, takeaways",
+        "Very popular with students & first renters",
+        "Excellent 86/75 bus routes"
+      ],
+      "crimeTotal": 395,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L16",
+      "name": "Childwall",
+      "side": "liverpool",
+      "center": [
+        -2.893,
+        53.392
+      ],
+      "overall": 4,
+      "safety": 4,
+      "rentAvg": 800,
+      "rentBand": "££",
+      "commuteMins": 25,
+      "verdict": "Leafy suburb, good schools, families. Quiet and safe, slightly dull if you're 25.",
+      "notes": [
+        "Good schools",
+        "Childwall Woods & Valley"
+      ],
+      "crimeTotal": 146,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L17",
+      "name": "Aigburth & Sefton Park",
+      "side": "liverpool",
+      "center": [
+        -2.938,
+        53.38
+      ],
+      "overall": 5,
+      "safety": 2,
+      "rentAvg": 750,
+      "rentBand": "££",
+      "commuteMins": 15,
+      "verdict": "Arguably the best quality-of-life postcode for a newcomer: Sefton Park, Lark Lane, the river promenade. Green, fun, safe-ish, well connected.",
+      "notes": [
+        "Lark Lane: restaurants & bars",
+        "Sefton Park on your doorstep",
+        "Riverside promenade walks",
+        "Train from St Michaels → town in 8 mins"
+      ],
+      "crimeTotal": 378,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L18",
+      "name": "Allerton & Mossley Hill",
+      "side": "liverpool",
+      "center": [
+        -2.902,
+        53.372
+      ],
+      "overall": 5,
+      "safety": 4,
+      "rentAvg": 820,
+      "rentBand": "££",
+      "commuteMins": 20,
+      "verdict": "Posh-ish suburbia. Allerton Road has proper restaurants and delis. Safe, green, family-friendly, slightly pricey.",
+      "notes": [
+        "Allerton Rd high street is great",
+        "Calderstones Park",
+        "Good schools"
+      ],
+      "crimeTotal": 111,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L19",
+      "name": "Garston & Speke",
+      "side": "liverpool",
+      "center": [
+        -2.893,
+        53.352
+      ],
+      "overall": 3,
+      "safety": 4,
+      "rentAvg": 650,
+      "rentBand": "£",
+      "commuteMins": 30,
+      "verdict": "South end of the city near the airport. Mixed — Garston village is fine, parts of Speke are rough. Good value if you pick well.",
+      "notes": [
+        "Near Liverpool John Lennon Airport",
+        "New retail park at New Mersey"
+      ],
+      "crimeTotal": 132,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L25",
+      "name": "Woolton & Gateacre",
+      "side": "liverpool",
+      "center": [
+        -2.868,
+        53.378
+      ],
+      "overall": 5,
+      "safety": 4,
+      "rentAvg": 850,
+      "rentBand": "££",
+      "commuteMins": 30,
+      "verdict": "Village-feel suburbia, very pretty, very safe. Woolton village has pubs and a cinema. Feels miles from the city (in a good way).",
+      "notes": [
+        "Woolton village charm",
+        "Beatles history (St Peter's Church)",
+        "Reynolds Park"
+      ],
+      "crimeTotal": 110,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L20",
+      "name": "Bootle",
+      "side": "liverpool",
+      "center": [
+        -3,
+        53.455
+      ],
+      "overall": 2,
+      "safety": 2,
+      "rentAvg": 580,
+      "rentBand": "£",
+      "commuteMins": 20,
+      "verdict": "Cheapest rents near the city for a reason — high deprivation and crime stats. Well connected by train, but research carefully.",
+      "notes": [
+        "Strand shopping centre",
+        "Direct trains to town"
+      ],
+      "crimeTotal": 461,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L21",
+      "name": "Litherland & Seaforth",
+      "side": "liverpool",
+      "center": [
+        -3.015,
+        53.468
+      ],
+      "overall": 2,
+      "safety": 3,
+      "rentAvg": 580,
+      "rentBand": "£",
+      "commuteMins": 25,
+      "verdict": "Similar story to Bootle — cheap, deprived, but on the train line. Some pockets by the water are improving.",
+      "notes": [
+        "Seaforth docks area is industrial",
+        "Train line is the main asset"
+      ],
+      "crimeTotal": 284,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L22",
+      "name": "Waterloo & Crosby",
+      "side": "liverpool",
+      "center": [
+        -3.025,
+        53.478
+      ],
+      "overall": 4,
+      "safety": 3,
+      "rentAvg": 720,
+      "rentBand": "££",
+      "commuteMins": 25,
+      "verdict": "Seaside suburbia — Waterloo has a great little high street and the beach with the Gormley statues. Underrated gem.",
+      "notes": [
+        "Another Place iron men on the beach",
+        "South Road shops & cafés",
+        "Trains every 15 mins to town"
+      ],
+      "crimeTotal": 244,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L23",
+      "name": "Crosby & Blundellsands",
+      "side": "liverpool",
+      "center": [
+        -3.03,
+        53.498
+      ],
+      "overall": 5,
+      "safety": 4,
+      "rentAvg": 800,
+      "rentBand": "££",
+      "commuteMins": 30,
+      "verdict": "Leafy, beachy, posh. Blundellsands is one of the nicest suburbs in Merseyside. If you want calm and sea air, here.",
+      "notes": [
+        "Beach access",
+        "Good schools",
+        "Quiet and safe"
+      ],
+      "crimeTotal": 128,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L32",
+      "name": "Kirkby",
+      "side": "liverpool",
+      "center": [
+        -2.89,
+        53.48
+      ],
+      "overall": 2,
+      "safety": 3,
+      "rentAvg": 560,
+      "rentBand": "£",
+      "commuteMins": 35,
+      "verdict": "Separate town north-east of Liverpool. Very cheap, but limited amenities and higher crime stats. Know what you're signing up for.",
+      "notes": [
+        "Train to town ~25 mins",
+        "New town centre development"
+      ],
+      "crimeTotal": 273,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "L36",
+      "name": "Huyton & Roby",
+      "side": "liverpool",
+      "center": [
+        -2.845,
+        53.412
+      ],
+      "overall": 3,
+      "safety": 4,
+      "rentAvg": 640,
+      "rentBand": "£",
+      "commuteMins": 30,
+      "verdict": "Mixed estate-and-suburb area east of the city. Roby side is nicer, has a station with direct trains to Manchester too.",
+      "notes": [
+        "Roby station is handy",
+        "Knowsley Safari Park nearby"
+      ],
+      "crimeTotal": 203,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH41",
+      "name": "Birkenhead Centre",
+      "side": "wirral",
+      "center": [
+        -3.022,
+        53.388
+      ],
+      "overall": 2,
+      "safety": 1,
+      "rentAvg": 550,
+      "rentBand": "£",
+      "commuteMins": 15,
+      "verdict": "Cheapest way to live 10 minutes from Liverpool city centre — but the town centre is struggling and crime stats are high. Trade-off postcode.",
+      "notes": [
+        "Hamilton Square station → town in 4 mins",
+        "Beautiful Georgian square, rough surroundings",
+        "Ferry to Liverpool from Woodside"
+      ],
+      "crimeTotal": 579,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH42",
+      "name": "Tranmere & Rock Ferry",
+      "side": "wirral",
+      "center": [
+        -3.01,
+        53.368
+      ],
+      "overall": 2,
+      "safety": 3,
+      "rentAvg": 540,
+      "rentBand": "£",
+      "commuteMins": 20,
+      "verdict": "Tranmere Rovers territory. Very cheap, rough in parts. The river views from the promenade are genuinely stunning though.",
+      "notes": [
+        "Ferry views of the Liverpool skyline",
+        "Prenton Park (Tranmere Rovers FC)"
+      ],
+      "crimeTotal": 272,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH43",
+      "name": "Prenton & Oxton",
+      "side": "wirral",
+      "center": [
+        -3.048,
+        53.375
+      ],
+      "overall": 4,
+      "safety": 3,
+      "rentAvg": 680,
+      "rentBand": "££",
+      "commuteMins": 20,
+      "verdict": "Oxton village is a hidden gem — conservation area, arty vibe, lovely pubs. Best value 'nice area' on the Wirral side.",
+      "notes": [
+        "Oxton village charm",
+        "Quick tunnel/train access to Liverpool"
+      ],
+      "crimeTotal": 225,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH44",
+      "name": "Wallasey & Liscard",
+      "side": "wirral",
+      "center": [
+        -3.045,
+        53.42
+      ],
+      "overall": 3,
+      "safety": 2,
+      "rentAvg": 580,
+      "rentBand": "£",
+      "commuteMins": 25,
+      "verdict": "Working-class seaside town feel. Mixed — some nice streets near the prom, some rough ones inland. Cheap with character.",
+      "notes": [
+        "Central Park",
+        "Liscard high street"
+      ],
+      "crimeTotal": 299,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH45",
+      "name": "New Brighton",
+      "side": "wirral",
+      "center": [
+        -3.038,
+        53.44
+      ],
+      "overall": 4,
+      "safety": 5,
+      "rentAvg": 650,
+      "rentBand": "££",
+      "commuteMins": 30,
+      "verdict": "Seaside resort having a genuine revival — marine lake, indie bars, beach, Fort Perch Rock. Fun place to live if you don't mind tourists in summer.",
+      "notes": [
+        "Beach + marine lake",
+        "Direct train to Liverpool",
+        "Good indie food scene"
+      ],
+      "crimeTotal": 87,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH46",
+      "name": "Moreton & Meols",
+      "side": "wirral",
+      "center": [
+        -3.115,
+        53.41
+      ],
+      "overall": 3,
+      "safety": 5,
+      "rentAvg": 680,
+      "rentBand": "££",
+      "commuteMins": 35,
+      "verdict": "Quiet residential north Wirral coast. Meols is nicer and near the sea; Moreton is more basic. Safe and sleepy.",
+      "notes": [
+        "Coastal walks",
+        "Train line to Liverpool"
+      ],
+      "crimeTotal": 103,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH47",
+      "name": "Hoylake",
+      "side": "wirral",
+      "center": [
+        -3.18,
+        53.39
+      ],
+      "overall": 5,
+      "safety": 5,
+      "rentAvg": 800,
+      "rentBand": "££",
+      "commuteMins": 40,
+      "verdict": "Posh seaside village — Royal Liverpool Golf Club, beach, nice restaurants. Lovely if you can handle the commute.",
+      "notes": [
+        "Hosted The Open Championship",
+        "End-of-line train to Liverpool"
+      ],
+      "crimeTotal": 44,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH48",
+      "name": "West Kirby & Caldy",
+      "side": "wirral",
+      "center": [
+        -3.185,
+        53.372
+      ],
+      "overall": 5,
+      "safety": 5,
+      "rentAvg": 850,
+      "rentBand": "£££",
+      "commuteMins": 40,
+      "verdict": "The Wirral's crown jewel — marine lake, Hilbre Island walks, great schools, proper restaurants. Premium prices, premium life.",
+      "notes": [
+        "Walk to Hilbre Island at low tide",
+        "Excellent schools",
+        "Direct train to Liverpool ~35 mins"
+      ],
+      "crimeTotal": 70,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH49",
+      "name": "Upton & Greasby",
+      "side": "wirral",
+      "center": [
+        -3.1,
+        53.385
+      ],
+      "overall": 4,
+      "safety": 4,
+      "rentAvg": 700,
+      "rentBand": "££",
+      "commuteMins": 30,
+      "verdict": "Solid middle-Wirral suburbia. Safe, family-friendly, well connected, zero excitement. Great if that's what you want.",
+      "notes": [
+        "Arrowe Park",
+        "Good schools"
+      ],
+      "crimeTotal": 122,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH60",
+      "name": "Heswall",
+      "side": "wirral",
+      "center": [
+        -3.1,
+        53.327
+      ],
+      "overall": 5,
+      "safety": 5,
+      "rentAvg": 900,
+      "rentBand": "£££",
+      "commuteMins": 40,
+      "verdict": "Affluent, pretty, Dee estuary sunsets, bars and restaurants on the hill. The poshest postcode on the Wirral — priced accordingly.",
+      "notes": [
+        "Estuary views",
+        "Buzzing high street for a small town"
+      ],
+      "crimeTotal": 35,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH61",
+      "name": "Pensby & Irby",
+      "side": "wirral",
+      "center": [
+        -3.115,
+        53.35
+      ],
+      "overall": 4,
+      "safety": 5,
+      "rentAvg": 720,
+      "rentBand": "££",
+      "commuteMins": 35,
+      "verdict": "Quiet family suburbs between Heswall and the motorway. Safe, green, handy for both coast and city.",
+      "notes": [
+        "Good schools",
+        "Near M53 for driving"
+      ],
+      "crimeTotal": 37,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH62",
+      "name": "Bromborough & Eastham",
+      "side": "wirral",
+      "center": [
+        -2.975,
+        53.33
+      ],
+      "overall": 3,
+      "safety": 4,
+      "rentAvg": 650,
+      "rentBand": "£",
+      "commuteMins": 30,
+      "verdict": "Eastham has the country park and village charm; Bromborough is more industrial/retail. Decent commuter value.",
+      "notes": [
+        "Eastham Country Park on the Mersey",
+        "Retail parks for shopping"
+      ],
+      "crimeTotal": 114,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH63",
+      "name": "Bebington & Higher Bebington",
+      "side": "wirral",
+      "center": [
+        -3.005,
+        53.35
+      ],
+      "overall": 4,
+      "safety": 5,
+      "rentAvg": 700,
+      "rentBand": "££",
+      "commuteMins": 25,
+      "verdict": "Port Sunlight village (CH62 edge) is tourist-brochure beautiful, and Bebington proper is solid suburbia. Underrated and well priced.",
+      "notes": [
+        "Port Sunlight: model village & Lady Lever gallery",
+        "Trains to Liverpool and Chester"
+      ],
+      "crimeTotal": 105,
+      "crimeDate": "2026-05"
+    },
+    {
+      "postcode": "CH64",
+      "name": "Neston & Parkgate",
+      "side": "wirral",
+      "center": [
+        -3.07,
+        53.29
+      ],
+      "overall": 4,
+      "safety": 5,
+      "rentAvg": 750,
+      "rentBand": "££",
+      "commuteMins": 45,
+      "verdict": "Little market town on the Dee estuary — Parkgate's marshes and ice cream are famous. Feels like Cheshire, because it nearly is.",
+      "notes": [
+        "Parkgate promenade & marsh views",
+        "Quieter pace of life"
+      ],
+      "crimeTotal": 61,
+      "crimeDate": "2026-05"
+    }
+  ]
+}
