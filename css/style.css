@@ -101,6 +101,14 @@ html, body, #app { height: 100%; font-family: -apple-system, "Segoe UI", Roboto,
 .bar-fill.crime { background: #c0564f; }
 .bar-text { font-size: 12px; color: #444; text-align: right; }
 
+.cool-box { margin-top: 14px; padding: 12px; background: #f5f9f4; border: 1px solid #ddebd8; border-radius: 8px; }
+.cool-box h3 { font-size: 14px; margin-bottom: 8px; }
+.cool-row { display: flex; align-items: baseline; gap: 8px; margin: 7px 0; font-size: 13px; }
+.cool-icon { font-size: 15px; flex-shrink: 0; }
+.cool-name { flex: 1; line-height: 1.35; }
+.cool-name small { display: block; color: #888; font-size: 11.5px; margin-top: 1px; }
+.cool-dist { color: #999; font-size: 11px; flex-shrink: 0; }
+
 .crime-box { margin-top: 16px; padding: 12px; background: #faf7f5; border: 1px solid #f0e4e0; border-radius: 8px; }
 .crime-box h3 { font-size: 14px; margin-bottom: 8px; }
 .crime-box h3 small { color: #999; font-weight: 400; }

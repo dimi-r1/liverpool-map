@@ -23,7 +23,9 @@ const LAYERS = {
   }
 };
 
-const TYPE_ICONS = { restaurant: "🍖", shop: "🛒", church: "⛪", group: "🤸", barber: "💈", other: "📍" };
+const TYPE_ICONS = { restaurant: "🍖", shop: "🛒", church: "⛪", group: "🤸", barber: "💈", other: "📍",
+  park: "🌳", beach: "🏖️", swim: "🏊", gym: "💪", attraction: "🎡", stadium: "🏟️",
+  nature: "🦆", marina: "⛵", golf: "⛳", watersports: "🚣", parkrun: "🏃", club: "👟", landmark: "📸" };
 
 const CRIME_LABELS = {
   "anti-social-behaviour": "Anti-social behaviour",
@@ -45,7 +47,27 @@ const CRIME_LABELS = {
 let currentLayer = "overall";
 let areasFC = null;
 let spotMarkers = [];
+let coolMarkers = [];
+let coolStuff = null;
 let hoveredPostcode = null;
+
+function km(a, b) {
+  const dx = (a[0] - b[0]) * 0.62, dy = a[1] - b[1];
+  return Math.sqrt(dx * dx + dy * dy) * 111;
+}
+
+async function loadCoolStuff() {
+  if (!coolStuff) coolStuff = (await (await fetch("data/liverpool/coolstuff.json")).json()).items;
+  return coolStuff;
+}
+
+function nearbyCool(center, limit = 6) {
+  if (!coolStuff) return [];
+  return [...coolStuff]
+    .sort((a, b) => km(a.location, center) - km(b.location, center))
+    .filter(s => km(s.location, center) <= 2.5)
+    .slice(0, limit);
+}
 
 function asArr(v) {
   if (Array.isArray(v)) return v;
@@ -168,6 +190,7 @@ function showPanel(p, feature) {
     </div>
     <div class="verdict">💬 ${p.verdict}</div>
     <ul class="notes">${asArr(p.notes).map(n => `<li>${n}</li>`).join("")}</ul>
+    <div class="cool-box" id="cool-box"><h3>✨ Nearby cool stuff</h3><div class="crime-loading">Loading…</div></div>
     <div class="crime-box">
       <h3>🚔 Crime breakdown <small>(${p.crimeDate || "latest"}, ${p.crimeTotal ?? "?"} reported, ~1mi radius)</small></h3>
       ${crimeBreakdownHTML(p)}
@@ -187,11 +210,58 @@ function showPanel(p, feature) {
     document.querySelectorAll(".bar-fill").forEach(el => el.style.width = el.dataset.width + "%"));
 
   if (feature) map.fitBounds(featureBounds(feature), { padding: { top: 60, bottom: 60, left: 60, right: 400 }, duration: 900, maxZoom: 13.5 });
+
+  const center = asArr(p.center);
+  loadCoolStuff().then(() => {
+    const near = nearbyCool(center);
+    const box = document.getElementById("cool-box");
+    if (!box) return;
+    box.innerHTML = `<h3>✨ Nearby cool stuff</h3>` + (near.length
+      ? near.map(s => `<div class="cool-row">
+          <span class="cool-icon">${TYPE_ICONS[s.type] || "📍"}</span>
+          <span class="cool-name">${s.name}${s.notes ? `<small>${s.notes}</small>` : ""}</span>
+          <span class="cool-dist">${km(s.location, center).toFixed(1)}km</span>
+        </div>`).join("")
+      : `<div class="crime-loading">Nothing mapped nearby — yet.</div>`);
+  });
 }
 
 function clearSpots() {
   spotMarkers.forEach(m => m.remove());
   spotMarkers = [];
+}
+
+function clearCool() {
+  coolMarkers.forEach(m => m.remove());
+  coolMarkers = [];
+}
+
+async function showCoolStuff(filter) {
+  clearCool();
+  if (!filter) return;
+  const items = await loadCoolStuff();
+  items.filter(s => filter === "all" || s.type === filter).forEach(s => {
+    const el = document.createElement("div");
+    el.className = "spot-marker";
+    el.textContent = TYPE_ICONS[s.type] || "📍";
+    el.addEventListener("mouseenter", () => el.classList.add("grown"));
+    el.addEventListener("mouseleave", () => el.classList.remove("grown"));
+    const popup = new maplibregl.Popup({ offset: 24, className: "spot-popup" }).setHTML(`
+      <div class="spot-card">
+        <div class="spot-icon">${TYPE_ICONS[s.type] || "📍"}</div>
+        <div>
+          <strong>${s.name}</strong>
+          <div class="spot-type">${s.type}</div>
+          ${s.notes ? `<p>${s.notes}</p>` : ""}
+          ${s.url ? `<a href="${s.url}" target="_blank" rel="noopener">website →</a>` : ""}
+        </div>
+      </div>
+    `);
+    const marker = new maplibregl.Marker({ element: el }).setLngLat(s.location).setPopup(popup).addTo(map);
+    el.addEventListener("click", () =>
+      map.flyTo({ center: s.location, zoom: Math.max(map.getZoom(), 14), duration: 800 }));
+    coolMarkers.push(marker);
+  });
 }
 
 async function showCommunity(id) {
@@ -299,6 +369,7 @@ document.getElementById("layer-select").addEventListener("change", e => {
   applyScores();
 });
 document.getElementById("community-select").addEventListener("change", e => showCommunity(e.target.value));
+document.getElementById("coolstuff-select").addEventListener("change", e => showCoolStuff(e.target.value));
 document.getElementById("panel-close").addEventListener("click", () =>
   document.getElementById("panel").classList.add("hidden"));
 document.getElementById("intro-close").addEventListener("click", () =>
